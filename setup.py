@@ -2,10 +2,10 @@ import os
 from setuptools import setup, find_packages
 
 if os.name == 'nt':
+    # Install into site-packages/picpro so runtime lookup via APP_ROOT_FOLDER/chipdata.cid works on Windows.
     chip_data_target_dir = 'picpro'
 else:
-    share_dir = os.getenv("SHAREDIR", "/usr/share")
-    chip_data_target_dir = os.path.join(share_dir, 'picpro')
+    chip_data_target_dir = os.path.join(os.getenv("SHAREDIR", "/usr/share"), 'picpro')
 
 def read_readme() -> str:
     with open('README.md', 'r', encoding='utf-8') as f:
