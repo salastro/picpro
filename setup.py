@@ -1,14 +1,10 @@
 import os
-import sys
 from setuptools import setup, find_packages
 
 if os.name == 'nt':
     chip_data_target_dir = 'picpro'
 else:
     share_dir = os.getenv("SHAREDIR", "/usr/share")
-    if not share_dir:
-        print('Failed to identify SHAREDIR, exiting.')
-        sys.exit(1)
     chip_data_target_dir = os.path.join(share_dir, 'picpro')
 
 def read_readme() -> str:
