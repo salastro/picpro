@@ -1,13 +1,15 @@
 import os
+import sys
 from setuptools import setup, find_packages
 
-data_files = []
-if os.name != 'nt':
-    data_files = [
-        (os.path.join(os.getenv("SHAREDIR", "/usr/share"), 'picpro'), [
-            'usr/share/picpro/chipdata.cid'
-        ])
-    ]
+if os.name == 'nt':
+    share_dir = os.getenv('LOCALAPPDATA')
+else:
+    share_dir = os.getenv("SHAREDIR", "/usr/share")
+
+if not share_dir:
+    print('Failed to identify SHAREDIR, exiting.')
+    sys.exit(1)
 
 def read_readme() -> str:
     with open('README.md', 'r', encoding='utf-8') as f:
@@ -18,7 +20,7 @@ setup(
     name='picpro',
     version='0.3.0',
     packages=find_packages(exclude=['tests', 'tests.*']),
-    package_data={'picpro': ['py.typed', 'chipdata.cid']},
+    package_data={'picpro': ['py.typed']},
     install_requires=[
         'pyserial',
         'docopt',
@@ -59,5 +61,9 @@ setup(
             'picpro = picpro.__main__:main',
         ],
     },
-    data_files=data_files
+    data_files=[
+        (os.path.join(share_dir, 'picpro'), [
+            'usr/share/picpro/chipdata.cid'
+        ])
+    ]
 )

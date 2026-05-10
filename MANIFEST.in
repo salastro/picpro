@@ -1,4 +1,3 @@
 include README.md
-include picpro/chipdata.cid
 recursive-include tests *
 recursive-include usr *
