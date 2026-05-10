@@ -3,13 +3,13 @@ import sys
 from setuptools import setup, find_packages
 
 if os.name == 'nt':
-    share_dir = os.getenv('LOCALAPPDATA')
+    chip_data_target_dir = 'picpro'
 else:
     share_dir = os.getenv("SHAREDIR", "/usr/share")
-
-if not share_dir:
-    print('Failed to identify SHAREDIR, exiting.')
-    sys.exit(1)
+    if not share_dir:
+        print('Failed to identify SHAREDIR, exiting.')
+        sys.exit(1)
+    chip_data_target_dir = os.path.join(share_dir, 'picpro')
 
 def read_readme() -> str:
     with open('README.md', 'r', encoding='utf-8') as f:
@@ -62,7 +62,7 @@ setup(
         ],
     },
     data_files=[
-        (os.path.join(share_dir, 'picpro'), [
+        (chip_data_target_dir, [
             'usr/share/picpro/chipdata.cid'
         ])
     ]
