@@ -1,11 +1,13 @@
 import os
 from setuptools import setup, find_packages
 
-if os.name == 'nt':
-    # Install into site-packages/picpro so runtime lookup via APP_ROOT_FOLDER/chipdata.cid works on Windows.
-    chip_data_target_dir = 'picpro'
-else:
-    chip_data_target_dir = os.path.join(os.getenv("SHAREDIR", "/usr/share"), 'picpro')
+data_files = []
+if os.name != 'nt':
+    data_files = [
+        (os.path.join(os.getenv("SHAREDIR", "/usr/share"), 'picpro'), [
+            'usr/share/picpro/chipdata.cid'
+        ])
+    ]
 
 def read_readme() -> str:
     with open('README.md', 'r', encoding='utf-8') as f:
@@ -16,7 +18,7 @@ setup(
     name='picpro',
     version='0.3.0',
     packages=find_packages(exclude=['tests', 'tests.*']),
-    package_data={'picpro': ['py.typed']},
+    package_data={'picpro': ['py.typed', 'chipdata.cid']},
     install_requires=[
         'pyserial',
         'docopt',
@@ -57,9 +59,5 @@ setup(
             'picpro = picpro.__main__:main',
         ],
     },
-    data_files=[
-        (chip_data_target_dir, [
-            'usr/share/picpro/chipdata.cid'
-        ])
-    ]
+    data_files=data_files
 )
